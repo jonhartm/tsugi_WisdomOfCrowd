@@ -10,7 +10,7 @@ $LTI = LTIX::requireData();
 
 // Handle the POST Data
 $p = $CFG->dbprefix;
-$questions = $LTI->link->getJsonKey('question', '');
+$questions = $LTI->link->getJsonKey('question', False);
 $current_question = $LTI->link->getJsonKey('cur_question', '1');
 
 if ($USER->instructor){
@@ -42,6 +42,11 @@ $OUTPUT->header();
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
 $OUTPUT->flashMessages();
+
+// DEBUG
+// echo '<pre>';
+// print_r($questions);
+// echo '</pre>';
 
 if ($USER->instructor){
   instructor_view($questions);
