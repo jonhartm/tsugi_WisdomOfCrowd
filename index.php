@@ -19,6 +19,20 @@ if ($USER->instructor){
     $_SESSION['success'] = 'Question added';
     header( 'Location: '.addSession('index.php') ) ;
   }
+} else {
+  // Student Response
+  if (isset($_POST['answer'])) {
+    $PDOX->queryDie("INSERT INTO {$p}wisdomOfCrowdAnswers
+            (link_id, user_id, question_id, answer_text)
+            VALUES ( :LI, :UI, $current_question, {$_POST['answer']} )",
+            array(
+                ':LI' => $LINK->id,
+                ':UI' => $USER->id
+            )
+        );
+    $_SESSION['success'] = 'Answer Submitted';
+    header( 'Location: '.addSession('index.php') ) ;
+  }
 }
 
 // Create the view
@@ -28,10 +42,6 @@ $OUTPUT->topNav();
 $OUTPUT->flashMessages();
 
 if ($USER->instructor){
-  // DEBUG
-  echo '<pre>';
-  print_r($questions);
-  echo '</pre>';
 
   for ($i=0;$i<count($questions);$i++){
     echo "Question $i: {$questions[$i]['question']} ({$questions[$i]['answer']})<br>";
