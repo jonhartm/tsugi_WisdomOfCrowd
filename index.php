@@ -11,12 +11,16 @@ $LTI = LTIX::requireData();
 // Handle the POST Data
 $p = $CFG->dbprefix;
 $questions = $LTI->link->getJsonKey('question', False);
-$current_question = $LTI->link->getJsonKey('cur_question', '1');
 
 if ($USER->instructor){
   if ((isset($_POST['question'])) && isset($_POST['answer'])) {
     $new_question = array('question'=>$_POST['question'], 'answer'=>$_POST['answer']);
-    array_push($questions, $new_question);
+    // TODO: this feels clunky - there has to be a better way
+    if (!$questions) {
+      $questions = array($new_question); // $questions was blank, so start a new array with this question
+    } else {
+      array_push($questions, $new_question); // otherwise append this array on the questions array
+    }
     $LTI->link->setJsonKey('question', $questions);
     $_SESSION['success'] = 'Question added';
     header( 'Location: '.addSession('index.php') ) ;
