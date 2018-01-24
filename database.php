@@ -8,9 +8,8 @@ array( "{$CFG->dbprefix}wisdomOfCrowdAnswers",
   "CREATE TABLE {$CFG->dbprefix}wisdomOfCrowdAnswers (
     link_id         INTEGER NOT NULL,
     user_id         INTEGER NOT NULL,
-    question_id     INTEGER NOT NULL,
     answer_text     TEXT NOT NULL,
-    CONSTRAINT U_id UNIQUE(link_id, user_id, question_id)
+    CONSTRAINT U_id UNIQUE(link_id, user_id)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8")
 );
 ?>

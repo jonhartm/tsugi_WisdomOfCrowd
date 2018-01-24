@@ -27,13 +27,15 @@ if ($USER->instructor){
   }
 } else {
   // Student Response
-  if (isset($_POST['answer'])) {
+  if (isset($_POST['answer0'])) {
     $PDOX->queryDie("INSERT INTO {$p}wisdomOfCrowdAnswers
-            (link_id, user_id, question_id, answer_text)
-            VALUES ( :LI, :UI, $current_question, {$_POST['answer']} )",
+            (link_id, user_id, answer_text)
+            VALUES ( :LI, :UI, :response )
+            ON DUPLICATE KEY UPDATE answer_text = :response",
             array(
                 ':LI' => $LINK->id,
-                ':UI' => $USER->id
+                ':UI' => $USER->id,
+                ':response' => implode(",", array_slice($_POST,1))
             )
         );
     $_SESSION['success'] = 'Answer Submitted';
@@ -48,9 +50,9 @@ $OUTPUT->topNav();
 $OUTPUT->flashMessages();
 
 // DEBUG
-// echo '<pre>';
-// print_r($questions);
-// echo '</pre>';
+echo '<pre>';
+
+echo '</pre>';
 
 if ($USER->instructor){
   instructor_view($questions);
