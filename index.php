@@ -12,6 +12,15 @@ $LTI = LTIX::requireData();
 $p = $CFG->dbprefix;
 $questions = $LTI->link->getJsonKey('question', False);
 
+// Check to see if the student has submitted answers already
+$has_answered = $PDOX->rowDie("SELECT 1 FROM {$p}wisdomOfCrowdAnswers
+  WHERE link_id=:LI AND user_id=:UI",
+  array(
+      ':LI' => $LINK->id,
+      ':UI' => $USER->id
+  )
+);
+
 if ($USER->instructor){
   if ((isset($_POST['question'])) && isset($_POST['answer'])) {
     $new_question = array('question'=>$_POST['question'], 'answer'=>$_POST['answer']);
@@ -57,7 +66,11 @@ echo '</pre>';
 if ($USER->instructor){
   instructor_view($questions);
 } else {
-  student_view($questions);
+  if (!$has_answered){
+    student_view($questions);
+  } else {
+    echo 'Your answers have been submitted';
+  }
 }
 
 $OUTPUT->footer();
