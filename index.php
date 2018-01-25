@@ -30,7 +30,7 @@ if ($USER->instructor){
     header( 'Location: '.addSession('index.php') ) ;
   }
   // Load the answers so far
-  $answers = $PDOX->allRowsDie("SELECT json FROM {$p}lti_result WHERE link_id=9");
+  $answers = $PDOX->allRowsDie("SELECT json FROM {$p}lti_result WHERE link_id={$LINK->id}");
 
 } else {
   // Student Response
