@@ -8,14 +8,15 @@ function instructor_view($questions, $answers) {
   } else {
     echo 'No Questions currently posted.';
   }
-  echo '<form method="post">';
-    echo '<label for="question">Enter a question:&nbsp;</label>';
-    echo '<input type="text" name="question" id="question" size=60>';
-    echo '<label for="answer">&nbsp;Answer:&nbsp;</label>';
-    echo '<input type="text" name="answer" id="answer" size=20><br>';
-    echo '<input type="submit">';
-  echo '</form>';
-
+?>
+<form method="post">
+  <label for="question">Enter a question:&nbsp;</label>
+  <input type="text" name="question" id="question" size=60>
+  <label for="answer">&nbsp;Answer:&nbsp;</label>
+  <input type="text" name="answer" id="answer" size=20><br>
+  <input type="submit">
+</form>
+<?php
   // Show the current answers
   echo '<div id="accordion">';
   foreach (sort_answers($questions, $answers) as $key => $value) {
