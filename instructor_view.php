@@ -65,11 +65,14 @@ function sort_answers($questions, $answers) {
       'responses' => array()
     );
     foreach ($answers as $a_key => $a_value) {
-      $answer = explode(",",$a_value['answer_text'])[$q];
-      if (isset($answer_counts['q'.$q]['responses'][$answer])){
-        $answer_counts['q'.$q]['responses'][$answer] += 1;
-      } else {
-        $answer_counts['q'.$q]['responses'][$answer] = 1;
+      $json_result = json_decode($a_value['json'], True);
+      if (!empty($json_result)) {
+        $answer = explode(",",$json_result['answers'])[$q];
+        if (isset($answer_counts['q'.$q]['responses'][$answer])){
+          $answer_counts['q'.$q]['responses'][$answer] += 1;
+        } else {
+          $answer_counts['q'.$q]['responses'][$answer] = 1;
+        }
       }
     }
   }

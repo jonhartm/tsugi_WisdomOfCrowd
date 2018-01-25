@@ -11,15 +11,8 @@ $LTI = LTIX::requireData();
 // Handle the POST Data
 $p = $CFG->dbprefix;
 $questions = $LTI->link->getJsonKey('question', False);
-
 // Check to see if the student has submitted answers already
-$has_answered = $PDOX->rowDie("SELECT 1 FROM {$p}wisdomOfCrowdAnswers
-  WHERE link_id=:LI AND user_id=:UI",
-  array(
-      ':LI' => $LINK->id,
-      ':UI' => $USER->id
-  )
-);
+$has_answered = $LTI->result->getJsonKey('answers', False);
 
 $answers = False;
 
@@ -37,21 +30,12 @@ if ($USER->instructor){
     header( 'Location: '.addSession('index.php') ) ;
   }
   // Load the answers so far
-  $answers = $PDOX->allRowsDie("SELECT answer_text FROM {$p}wisdomOfCrowdAnswers");
+  $answers = $PDOX->allRowsDie("SELECT json FROM {$p}lti_result WHERE link_id=9");
 
 } else {
   // Student Response
   if (isset($_POST['answer0'])) {
-    $PDOX->queryDie("INSERT INTO {$p}wisdomOfCrowdAnswers
-            (link_id, user_id, answer_text)
-            VALUES ( :LI, :UI, :response )
-            ON DUPLICATE KEY UPDATE answer_text = :response",
-            array(
-                ':LI' => $LINK->id,
-                ':UI' => $USER->id,
-                ':response' => implode(",", array_slice($_POST,1))
-            )
-        );
+    $LTI->result->setJsonKey('answers', implode(",", array_slice($_POST,1)));
     $_SESSION['success'] = 'Answer Submitted';
     header( 'Location: '.addSession('index.php') ) ;
   }
@@ -76,7 +60,7 @@ $OUTPUT->flashMessages();
 
 // DEBUG
 // echo '<pre>';
-// print_r($answers);
+// print_r($has_answered);
 // echo '</pre>';
 
 if ($USER->instructor){
