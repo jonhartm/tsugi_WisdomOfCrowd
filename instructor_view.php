@@ -16,9 +16,17 @@ function instructor_view($questions, $answers) {
     echo '<input type="submit">';
   echo '</form>';
 
-  echo '<pre>';
-  print_r(sort_answers($questions, $answers));
-  echo '</pre>';
+  // Show the current answers
+  echo '<div id="accordion">';
+  foreach (sort_answers($questions, $answers) as $key => $value) {
+    echo '<h3>Q:'.$value['question'].' (A: '.$value['answer'].')</h3>';
+    echo '<p>';
+    foreach ($value['responses'] as $k_res => $v_res) {
+          echo 'Response: '.$k_res.' - Count('.$v_res.')<br>';
+    }
+    echo '</p>';
+  }
+  echo '</div>';
 }
 
 function sort_answers($questions, $answers) {

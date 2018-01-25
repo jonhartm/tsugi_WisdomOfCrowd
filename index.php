@@ -59,6 +59,17 @@ if ($USER->instructor){
 
 // Create the view
 $OUTPUT->header();
+?>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+$( function() {
+    $( "#accordion" ).accordion({
+      collapsible: true
+    });
+  } );
+</script>
+<?php
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
 $OUTPUT->flashMessages();
