@@ -34,6 +34,7 @@ function create_question_input_form() {
     echo '<select name="question_type">';
       echo '<option value="short_answer">Short Answer</option>';
       echo '<option value="picture">Upload Picture</option>';
+      echo '<option value="multi_text">Multiple Answer</option>';
       echo '</select>';
     echo '<br>';
     echo '<label for="question">Enter a question:&nbsp;</label>';
@@ -44,9 +45,9 @@ function create_question_input_form() {
     echo '<input type="text" name="hint" id="hint" size=20>';
     echo '<br>';
     echo '<label for="enforce_case">Case Matters?</label>';
-    echo '<input type="checkbox" name="enforce_case" id="enforce_case" disabled></input>';
+    echo '<input type="checkbox" name="enforce_case" id="enforce_case"></input>';
     echo '<label for="answer_type">Answer Type</label>';
-    echo '<select name="answer_type" disabled>';
+    echo '<select name="answer_type">';
       echo '<option value="number">Numerical</option>';
       echo '<option value="text">Short Answer</option>';
     echo '</select>';

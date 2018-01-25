@@ -17,8 +17,16 @@ $has_answered = $LTI->result->getJsonKey('answers', False);
 $answers = False;
 
 if ($USER->instructor){
-  if ((isset($_POST['question'])) && isset($_POST['answer'])) {
-    $new_question = array('question'=>$_POST['question'], 'answer'=>$_POST['answer']);
+  if (isset($_POST['question'])) {
+    $new_question =
+      array(
+        'question_type'=>$_POST['question_type'],
+        'question'=>$_POST['question'],
+        'answer'=>$_POST['answer'],
+        'hint'=>$_POST['hint'],
+        'enforce_case'=>$_POST['enforce_case'],
+        'answer_type'=>$_POST['answer_type']
+      );
     // TODO: this feels clunky - there has to be a better way
     if (!$questions) {
       $questions = array($new_question); // $questions was blank, so start a new array with this question
