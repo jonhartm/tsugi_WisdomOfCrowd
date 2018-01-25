@@ -21,6 +21,8 @@ $has_answered = $PDOX->rowDie("SELECT 1 FROM {$p}wisdomOfCrowdAnswers
   )
 );
 
+$answers = False;
+
 if ($USER->instructor){
   if ((isset($_POST['question'])) && isset($_POST['answer'])) {
     $new_question = array('question'=>$_POST['question'], 'answer'=>$_POST['answer']);
@@ -34,6 +36,9 @@ if ($USER->instructor){
     $_SESSION['success'] = 'Question added';
     header( 'Location: '.addSession('index.php') ) ;
   }
+  // Load the answers so far
+  $answers = $PDOX->allRowsDie("SELECT answer_text FROM {$p}wisdomOfCrowdAnswers");
+
 } else {
   // Student Response
   if (isset($_POST['answer0'])) {
@@ -59,12 +64,12 @@ $OUTPUT->topNav();
 $OUTPUT->flashMessages();
 
 // DEBUG
-echo '<pre>';
-
-echo '</pre>';
+// echo '<pre>';
+// print_r($answers);
+// echo '</pre>';
 
 if ($USER->instructor){
-  instructor_view($questions);
+  instructor_view($questions, $answers);
 } else {
   if (!$has_answered){
     student_view($questions);
