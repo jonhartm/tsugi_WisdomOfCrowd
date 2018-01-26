@@ -36,6 +36,14 @@ if ($USER->instructor){
     $LTI->link->setJsonKey('question', $questions);
     $_SESSION['success'] = 'Question added';
     header( 'Location: '.addSession('index.php') ) ;
+  } else if (isset($_POST['clear_student_data']) || isset($_POST['clear_all_data'])) {
+    // Clear student answers
+    $PDOX->queryDie("UPDATE {$p}lti_result SET json=NULL WHERE link_id={$LINK->id}");
+    if (isset($_POST['clear_all_data'])){
+      // Clear question Json
+      $LTI->link->SetJson(NULL);
+    }
+    header( 'Location: '.addSession('index.php') ) ;
   }
   // Load the answers so far
   $answers = $PDOX->allRowsDie("SELECT json FROM {$p}lti_result WHERE link_id={$LINK->id}");

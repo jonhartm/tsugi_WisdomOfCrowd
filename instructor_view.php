@@ -24,6 +24,12 @@ echo '<h3>Responses so far:</h3>';
     echo '</p>';
   }
   echo '</div>';
+
+  echo '<br>';
+  echo '<form method="post">';
+    echo '<input type="submit" value="Clear Student Data" name="clear_student_data">';
+    echo '<input type="submit" value="Clear All Data" name="clear_all_data">';
+  echo '</form>';
 }
 
 function create_question_input_form() {
