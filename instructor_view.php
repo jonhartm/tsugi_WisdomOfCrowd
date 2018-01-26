@@ -11,8 +11,9 @@ function instructor_view($questions, $answers) {
 
 create_question_input_form();
 
-echo '<br><br>';
-echo '<h3>Responses so far:</h3>';
+if ($questions) {
+  echo '<br><br>';
+  echo '<h3>Responses so far:</h3>';
   // Show the current answers
   echo '<div id="accordion">';
   foreach (sort_answers($questions, $answers) as $key => $value) {
@@ -24,7 +25,7 @@ echo '<h3>Responses so far:</h3>';
     echo '</p>';
   }
   echo '</div>';
-
+}
   echo '<br>';
   echo '<form method="post">';
     echo '<input type="submit" value="Clear Student Data" name="clear_student_data">';
