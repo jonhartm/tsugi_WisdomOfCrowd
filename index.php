@@ -1,7 +1,5 @@
 <?php
 require_once "../config.php";
-include "instructor_view.php";
-include "student_view.php";
 
 use \Tsugi\Core\LTIX;
 use \Tsugi\Core\Settings;
@@ -59,17 +57,11 @@ if ($USER->instructor){
 
 // Create the view
 $OUTPUT->header();
-?>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-$( function() {
-    $( "#accordion" ).accordion({
-      collapsible: true
-    });
-  } );
-</script>
-<?php
+
+include "instructor_view.php";
+include "student_view.php";
+include "scripts.js";
+
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
 $OUTPUT->flashMessages();

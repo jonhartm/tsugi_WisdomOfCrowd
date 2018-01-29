@@ -38,7 +38,7 @@ function create_question_input_form() {
   echo '<br>';
   echo '<form method="post">';
     echo '<label for="question_type">Question Type:&nbsp;</label>';
-    echo '<select name="question_type">';
+    echo '<select name="question_type" onchange="QuestionTypeChanged()">';
       echo '<option value="short_answer">Short Answer</option>';
       echo '<option value="picture">Upload Picture</option>';
       echo '<option value="multi_text">Multiple Answer</option>';
