@@ -65,14 +65,14 @@ function create_question_input_form($question_type = "short_answer") {
     } else if (form_option=="multi_text") {
       htmlString += 'not ready';
     }
-    htmlString += '<br><input type="submit">'; // tack a submit button to the end of any form
+    htmlString += '<br><input type="submit" name="submit_new_question">'; // tack a submit button to the end of any form
   	document.getElementById("form_display").innerHTML = htmlString;   // replaces the html in the div "form_display"
   }
   </script>
 
-  <form method="post">
+  <form enctype="multipart/form-data" method="post">
   Add a new question:
-  <select id="question_type" onchange="changeForm()">
+  <select id="question_type" name="question_type" onchange="changeForm()">
     <option value="">Select a Question Type</option>
     <option value="short_answer">Short Answer</option>
     <option value="picture">Upload Picture</option>

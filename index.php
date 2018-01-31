@@ -3,6 +3,7 @@ require_once "../config.php";
 
 use \Tsugi\Core\LTIX;
 use \Tsugi\Core\Settings;
+use \Tsugi\Blob\BlobUtil;
 
 $LTI = LTIX::requireData();
 
@@ -15,29 +16,58 @@ $has_answered = $LTI->result->getJsonKey('answers', False);
 $answers = False;
 
 if ($USER->instructor){
-  if (isset($_POST['question'])) {
-    $new_question =
-      array(
-        'question_type'=>$_POST['question_type'],
-        'question'=>$_POST['question'],
-        'answer'=>$_POST['answer'],
-        'hint'=>$_POST['hint'],
-        'enforce_case'=>$_POST['enforce_case'],
-        'answer_type'=>$_POST['answer_type']
-      );
-    // TODO: this feels clunky - there has to be a better way
-    if (!$questions) {
-      $questions = array($new_question); // $questions was blank, so start a new array with this question
-    } else {
-      array_push($questions, $new_question); // otherwise append this array on the questions array
+  if (isset($_POST['submit_new_question'])) { // did the user submit a new question?
+    $new_question = false;
+    if ($_POST['question_type'] == 'short_answer') {
+      // Set a short answer question
+      $new_question =
+        array(
+          'question_type'=>$_POST['question_type'],
+          'question'=>$_POST['question'],
+          'answer'=>$_POST['answer'],
+          'hint'=>$_POST['hint'],
+          'enforce_case'=>$_POST['enforce_case'],
+          'answer_type'=>$_POST['answer_type']
+        );
+      // TODO: this feels clunky - there has to be a better way
+      if (!$questions) {
+        $questions = array($new_question); // $questions was blank, so start a new array with this question
+      } else {
+        array_push($questions, $new_question); // otherwise append this array on the questions array
+      }
+      $LTI->link->setJsonKey('question', $questions);
+      $_SESSION['success'] = 'Question added';
+      header( 'Location: '.addSession('index.php') ) ;
+    } else if (isset($_FILES['uploaded_file']) && $_POST['question_type'] == 'picture') {
+      // We're uploading a picture
+      $file_destination = $_FILES['uploaded_file'];
+      $filename = isset($file_destination['name']) ? basename($file_destination['name']) : false;
+
+      // check for errors uploading
+      $safety = BlobUtil::validateUpload($file_destination);
+      if ($safety !== true) {
+        $_SESSION['error'] = "Error: ".$safety.' - filedest: '.$file_destination;
+        header( 'Location: '.addSession('index.php') ) ;
+        return;
+      }
+
+      // check for an error uploading
+      $blob_id = BlobUtil::uploadToBlob($file_destination);
+      if ($blob_id === false) {
+        $_SESSION['error'] = 'Problem storing file in server: '.$filename;
+        header( 'Location: '.addSession('index.php') ) ;
+        return;
+      }
+
+      // if we made it here we're good
+      $_SESSION['success'] = 'File uploaded and Question added';
+      header( 'Location: '.addSession('index.php') ) ;
+      return;
     }
-    $LTI->link->setJsonKey('question', $questions);
-    $_SESSION['success'] = 'Question added';
-    header( 'Location: '.addSession('index.php') ) ;
-  } else if (isset($_POST['clear_student_data']) || isset($_POST['clear_all_data'])) {
+  } else if (isset($_POST['clear_student_data']) || isset($_POST['clear_all_data'])) { // We are clearing some or all of the data
     // Clear student answers
     $PDOX->queryDie("UPDATE {$p}lti_result SET json=NULL WHERE link_id={$LINK->id}");
-    if (isset($_POST['clear_all_data'])){
+    if (isset($_POST['clear_all_data'])){ // Clear all the question data as well
       // Clear question Json
       $LTI->link->SetJson(NULL);
     }
