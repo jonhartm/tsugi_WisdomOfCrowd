@@ -1,4 +1,6 @@
 <?php
+use \Tsugi\Blob\BlobUtil;
+
 function instructor_view($questions, $answers) {
   if ($questions){
     echo 'Questions entered:<br>';
@@ -6,7 +8,7 @@ function instructor_view($questions, $answers) {
       echo "Question $i: {$questions[$i]['question']} ({$questions[$i]['answer']})<br>";
     }
   } else {
-    echo 'No Questions currently posted.';
+    echo 'No Questions currently posted.<br><br>';
   }
 
 create_question_input_form();
@@ -33,34 +35,54 @@ if ($questions) {
   echo '</form>';
 }
 
-function create_question_input_form() {
-  // Create the input form for adding a question
-  echo '<br>';
-  echo '<form method="post">';
-    echo '<label for="question_type">Question Type:&nbsp;</label>';
-    echo '<select name="question_type" onchange="QuestionTypeChanged()">';
-      echo '<option value="short_answer">Short Answer</option>';
-      echo '<option value="picture">Upload Picture</option>';
-      echo '<option value="multi_text">Multiple Answer</option>';
-      echo '</select>';
-    echo '<br>';
-    echo '<label for="question">Enter a question:&nbsp;</label>';
-    echo '<input type="text" name="question" id="question" size=40>';
-    echo '<label for="answer">&nbsp;Answer:&nbsp;</label>';
-    echo '<input type="text" name="answer" id="answer" size=20>';
-    echo '<label for="hint">&nbsp;Provide a Hint:&nbsp;</label>';
-    echo '<input type="text" name="hint" id="hint" size=20>';
-    echo '<br>';
-    echo '<label for="enforce_case">Case Matters?</label>';
-    echo '<input type="checkbox" name="enforce_case" id="enforce_case"></input>';
-    echo '<label for="answer_type">Answer Type</label>';
-    echo '<select name="answer_type">';
-      echo '<option value="number">Numerical</option>';
-      echo '<option value="text">Short Answer</option>';
-    echo '</select>';
-    echo '<br>';
-    echo '<input type="submit">';
-  echo '</form>';
+// function to display different versions of the form based on the dropdown selection
+function create_question_input_form($question_type = "short_answer") {
+?>
+  <script>
+  function changeForm() {
+    var form_option = document.getElementById("question_type").value;
+    var htmlString = '';
+    if (form_option=="short_answer") {
+      htmlString += '<label for="question">Enter a question:&nbsp;</label>';
+      htmlString += '<input type="text" name="question" id="question" size=40>';
+      htmlString += '<label for="answer">&nbsp;Answer:&nbsp;</label>';
+      htmlString += '<input type="text" name="answer" id="answer" size=20>';
+      htmlString += '<label for="hint">&nbsp;Provide a Hint:&nbsp;</label>';
+      htmlString += '<input type="text" name="hint" id="hint" size=20>';
+      htmlString += '<br>';
+      htmlString += '<label for="enforce_case">Case Matters?</label>';
+      htmlString += '<input type="checkbox" name="enforce_case" id="enforce_case"></input>';
+      htmlString += '<label for="answer_type">Answer Type</label>';
+      htmlString += '<select name="answer_type">';
+        htmlString += '<option value="number">Numerical</option>';
+        htmlString += '<option value="text">Short Answer</option>';
+      htmlString += '</select>';
+    } else if (form_option=="picture") {
+      htmlString += '<label for="question">Enter a prompt:&nbsp;</label>';
+      htmlString += '<input type="text" name="question" id="question" size=40>';
+      htmlString += '<br>';
+      htmlString += 'Upload File: (max <?php echo(BlobUtil::maxUpload());?>MB)<input name="uploaded_file" type="file">';
+    } else if (form_option=="multi_text") {
+      htmlString += 'not ready';
+    }
+    htmlString += '<br><input type="submit">'; // tack a submit button to the end of any form
+  	document.getElementById("form_display").innerHTML = htmlString;   // replaces the html in the div "form_display"
+  }
+  </script>
+
+  <form method="post">
+  Add a new question:
+  <select id="question_type" onchange="changeForm()">
+    <option value="">Select a Question Type</option>
+    <option value="short_answer">Short Answer</option>
+    <option value="picture">Upload Picture</option>
+    <option value="multi_text">Multiple Answer</option>
+  </select>
+  <br><br>
+  <div id="form_display">
+  </div>
+  </form>
+<?php
 }
 
 function sort_answers($questions, $answers) {
