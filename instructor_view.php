@@ -66,8 +66,8 @@ function create_question_input_form($question_type = "short_answer") {
       htmlString += '<input type="checkbox" name="enforce_case" id="enforce_case"></input>';
       htmlString += '<label for="answer_type">Answer Type</label>';
       htmlString += '<select name="answer_type">';
-        htmlString += '<option value="number">Numerical</option>';
         htmlString += '<option value="text">Short Answer</option>';
+        htmlString += '<option value="number">Numerical</option>';
       htmlString += '</select>';
     } else if (form_option=="picture") {
       htmlString += '<label for="question">Enter a prompt:&nbsp;</label>';
