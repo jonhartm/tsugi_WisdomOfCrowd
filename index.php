@@ -29,13 +29,6 @@ if ($USER->instructor){
           'enforce_case'=>$_POST['enforce_case'],
           'answer_type'=>$_POST['answer_type']
         );
-      // TODO: this feels clunky - there has to be a better way
-      if (!$questions) {
-        $questions = array($new_question); // $questions was blank, so start a new array with this question
-      } else {
-        array_push($questions, $new_question); // otherwise append this array on the questions array
-      }
-      $LTI->link->setJsonKey('question', $questions);
       $_SESSION['success'] = 'Question added';
       header( 'Location: '.addSession('index.php') ) ;
     } else if (isset($_FILES['uploaded_file']) && $_POST['question_type'] == 'picture') {
@@ -60,10 +53,26 @@ if ($USER->instructor){
       }
 
       // if we made it here we're good
+      $new_question =
+        array(
+          'question_type'=>$_POST['question_type'],
+          'question'=>$_POST['question'],
+          'pic_blob_id'=>$blob_id
+        );
+
       $_SESSION['success'] = 'File uploaded and Question added';
       header( 'Location: '.addSession('index.php') ) ;
-      return;
     }
+
+    // TODO: this feels clunky - there has to be a better way
+    // Append the questions to the array so we can save them again
+    if (!$questions) {
+      $questions = array($new_question); // $questions was blank, so start a new array with this question
+    } else {
+      array_push($questions, $new_question); // otherwise append this array on the questions array
+    }
+    $LTI->link->setJsonKey('question', $questions);
+
   } else if (isset($_POST['clear_student_data']) || isset($_POST['clear_all_data'])) { // We are clearing some or all of the data
     // Clear student answers
     $PDOX->queryDie("UPDATE {$p}lti_result SET json=NULL WHERE link_id={$LINK->id}");

@@ -5,7 +5,11 @@ function instructor_view($questions, $answers) {
   if ($questions){
     echo 'Questions entered:<br>';
     for ($i=0;$i<count($questions);$i++){
-      echo "Question $i: {$questions[$i]['question']} ({$questions[$i]['answer']})<br>";
+      if ($questions[$i]['question_type'] == 'short_answer'){
+        echo "Question $i: {$questions[$i]['question']} ({$questions[$i]['answer']})<br>";
+      } else if ($questions[$i]['question_type'] == 'picture'){
+        echo "Question $i: {$questions[$i]['question']} <br>";
+      }
     }
   } else {
     echo 'No Questions currently posted.<br><br>';
@@ -91,7 +95,7 @@ function sort_answers($questions, $answers) {
   for ($q=0; $q < count($questions); $q++) {
     $answer_counts['q'.$q] = array(
       'question' => $questions[$q]['question'],
-      'answer' => $questions[$q]['answer'],
+      'answer' => isset($questions[$q]['answer']) ? $questions[$q]['answer'] : false,
       'responses' => array()
     );
     foreach ($answers as $a_key => $a_value) {
