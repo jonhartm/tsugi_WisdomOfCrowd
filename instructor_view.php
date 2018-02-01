@@ -8,7 +8,9 @@ function instructor_view($questions, $answers) {
       if ($questions[$i]['question_type'] == 'short_answer'){
         echo "Question $i: {$questions[$i]['question']} ({$questions[$i]['answer']})<br>";
       } else if ($questions[$i]['question_type'] == 'picture'){
-        echo "Question $i: {$questions[$i]['question']} <br>";
+        echo "Question $i: {$questions[$i]['question']}";
+        $serve = BlobUtil::getAccessUrlForBlob($questions[$i]['pic_blob_id']);
+        echo '<img src="'.addSession($serve).'" height="40">';
       }
     }
   } else {
