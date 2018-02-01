@@ -84,12 +84,13 @@ if ($USER->instructor){
           array_push($blobs, $value['pic_blob_id']);
         }
       }
-      $_SESSION['success'] = implode(',',$blobs);
+
       $PDOX->queryDie("DELETE FROM {$p}blob_file WHERE file_id IN (:BLOBS)",
         array(':BLOBS'=>implode(',',$blobs)));
       // Clear question Json
       $LTI->link->SetJson(NULL);
     }
+    $_SESSION['success'] = 'Data cleared.';
     header( 'Location: '.addSession('index.php') ) ;
   }
   // Load the answers so far
