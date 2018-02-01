@@ -85,8 +85,8 @@ if ($USER->instructor){
         }
       }
       $_SESSION['success'] = implode(',',$blobs);
-      // $PDOX->allRowsDie("DELETE FROM {$p}blob_file WHERE file_id IN (:BLOBS)",
-      //   array(':BLOBS'=>implode(',',$blobs)));
+      $PDOX->queryDie("DELETE FROM {$p}blob_file WHERE file_id IN (:BLOBS)",
+        array(':BLOBS'=>implode(',',$blobs)));
       // Clear question Json
       $LTI->link->SetJson(NULL);
     }
