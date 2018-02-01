@@ -120,4 +120,3 @@ function sort_answers($questions, $answers) {
   }
   return $answer_counts;
 }
-?>

@@ -21,4 +21,3 @@ function student_view($questions){
     echo 'No questions posted at this time.';
   }
 }
- ?>
