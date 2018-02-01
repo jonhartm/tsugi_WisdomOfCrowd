@@ -77,6 +77,16 @@ if ($USER->instructor){
     // Clear student answers
     $PDOX->queryDie("UPDATE {$p}lti_result SET json=NULL WHERE link_id={$LINK->id}");
     if (isset($_POST['clear_all_data'])){ // Clear all the question data as well
+      // Clear the blob data
+      $blobs = array();
+      foreach ($questions as $key => $value) {
+        if ($value['question_type'] == 'picture') {
+          array_push($blobs, $value['pic_blob_id']);
+        }
+      }
+      $_SESSION['success'] = implode(',',$blobs);
+      // $PDOX->allRowsDie("DELETE FROM {$p}blob_file WHERE file_id IN (:BLOBS)",
+      //   array(':BLOBS'=>implode(',',$blobs)));
       // Clear question Json
       $LTI->link->SetJson(NULL);
     }
