@@ -110,7 +110,6 @@ $OUTPUT->header();
 
 include "instructor_view.php";
 include "student_view.php";
-include "scripts.js";
 
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
@@ -130,6 +129,7 @@ if ($USER->instructor){
     echo 'Your answers have been submitted';
   }
 }
-
-$OUTPUT->footer();
+$OUTPUT->footerStart();
+include "scripts.js"; // All jquery goes in the footer
+$OUTPUT->footerEnd();
 ?>
