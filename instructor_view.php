@@ -27,7 +27,11 @@ function instructor_view($questions, $answers) {
     // Show the current answers
     echo '<div id="accordion">';
     foreach (sort_answers($questions, $answers) as $key => $value) {
-      echo '<h3>Q:'.$value['question'].' (A: '.$value['answer'].')</h3>';
+      echo '<h3>Q:'.$value['question'];
+      if ($value['answer']) {
+        echo ' (A: '.$value['answer'].')';
+      }
+      echo '</h3>';
       echo '<p>';
       foreach ($value['responses'] as $k_res => $v_res) {
             echo 'Response: '.$k_res.' - Count('.$v_res.')<br>';
