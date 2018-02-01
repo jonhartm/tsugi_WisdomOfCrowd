@@ -17,28 +17,28 @@ function instructor_view($questions, $answers) {
     echo 'No Questions currently posted.<br><br>';
   }
 
-create_question_input_form();
+  create_question_input_form();
 
-if ($questions) {
-  echo '<br><br>';
-  echo '<h3>Responses so far:</h3>';
-  // Show the current answers
-  echo '<div id="accordion">';
-  foreach (sort_answers($questions, $answers) as $key => $value) {
-    echo '<h3>Q:'.$value['question'].' (A: '.$value['answer'].')</h3>';
-    echo '<p>';
-    foreach ($value['responses'] as $k_res => $v_res) {
-          echo 'Response: '.$k_res.' - Count('.$v_res.')<br>';
+  if ($questions) {
+    echo '<br><br>';
+    echo '<h3>Responses so far:</h3>';
+    // Show the current answers
+    echo '<div id="accordion">';
+    foreach (sort_answers($questions, $answers) as $key => $value) {
+      echo '<h3>Q:'.$value['question'].' (A: '.$value['answer'].')</h3>';
+      echo '<p>';
+      foreach ($value['responses'] as $k_res => $v_res) {
+            echo 'Response: '.$k_res.' - Count('.$v_res.')<br>';
+      }
+      echo '</p>';
     }
-    echo '</p>';
+    echo '</div>';
   }
-  echo '</div>';
-}
-  echo '<br>';
-  echo '<form method="post">';
-    echo '<input type="submit" value="Clear Student Data" name="clear_student_data">';
-    echo '<input type="submit" value="Clear All Data" name="clear_all_data">';
-  echo '</form>';
+    echo '<br>';
+    echo '<form method="post">';
+      echo '<input type="submit" value="Clear Student Data" name="clear_student_data">';
+      echo '<input type="submit" value="Clear All Data" name="clear_all_data">';
+    echo '</form>';
 }
 
 // function to display different versions of the form based on the dropdown selection
