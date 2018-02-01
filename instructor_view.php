@@ -10,7 +10,7 @@ function instructor_view($questions, $answers) {
       } else if ($questions[$i]['question_type'] == 'picture'){
         echo "Question $i: {$questions[$i]['question']}";
         $serve = BlobUtil::getAccessUrlForBlob($questions[$i]['pic_blob_id']);
-        echo '<img src="'.addSession($serve).'" height="40">';
+        echo '<img src="'.addSession($serve).'" height="40"><br>';
       }
     }
   } else {
