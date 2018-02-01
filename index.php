@@ -1,5 +1,7 @@
 <?php
 require_once "../config.php";
+include "instructor_view.php";
+include "student_view.php";
 
 use \Tsugi\Core\LTIX;
 use \Tsugi\Core\Settings;
@@ -107,10 +109,6 @@ if ($USER->instructor){
 
 // Create the view
 $OUTPUT->header();
-
-include "instructor_view.php";
-include "student_view.php";
-
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
 $OUTPUT->flashMessages();
