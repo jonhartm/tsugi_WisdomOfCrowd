@@ -3,7 +3,7 @@ use \Tsugi\Blob\BlobUtil;
 
 function instructor_view($questions, $answers) {
   if ($questions){
-    echo 'Questions entered:<br>';
+    echo '<div id="blah">Questions entered:</div><br>';
     for ($i=0;$i<count($questions);$i++){
       if ($questions[$i]['question_type'] == 'short_answer'){
         echo "Question $i: {$questions[$i]['question']} ({$questions[$i]['answer']})<br>";
@@ -13,6 +13,8 @@ function instructor_view($questions, $answers) {
         $blob_url = addSession($serve);
         echo '<img src="'.$blob_url.'" height="40">';
         echo '<a href="'.$blob_url.'">Click For Full Image</a><br>';
+      } else if ($questions[$i]['question_type'] == 'multi_text') {
+        echo "Question $i: {$questions[$i]['question']} (Max {$questions[$i]['max_entries']} replies)<br>";
       }
     }
   } else {
@@ -75,7 +77,10 @@ function create_question_input_form($question_type = "short_answer") {
       htmlString += '<br>';
       htmlString += 'Upload File: (max <?php echo(BlobUtil::maxUpload());?>MB)<input name="uploaded_file" type="file">';
     } else if (form_option=="multi_text") {
-      htmlString += 'not ready';
+      htmlString += '<label for="question">Enter a prompt:&nbsp;</label>';
+      htmlString += '<input type="text" name="question" id="question" size=40><br>';
+      htmlString += '<label for="max_entries">Maximum Responses:&nbsp;</label>';
+      htmlString += '<input type="text" name="max_entries" id="max_entries" size=1  0>';
     }
     htmlString += '<br><input type="submit" name="submit_new_question">'; // tack a submit button to the end of any form
   	document.getElementById("form_display").innerHTML = htmlString;   // replaces the html in the div "form_display"

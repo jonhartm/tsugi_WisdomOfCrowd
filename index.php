@@ -64,6 +64,15 @@ if ($USER->instructor){
 
       $_SESSION['success'] = 'File uploaded and Question added';
       header( 'Location: '.addSession('index.php') ) ;
+    } else if ($_POST['question_type'] == 'multi_text') {
+      $new_question =
+        array(
+          'question_type'=>$_POST['question_type'],
+          'question'=>$_POST['question'],
+          'max_entries'=>$_POST['max_entries']
+        );
+      $_SESSION['success'] = 'Question added';
+      header( 'Location: '.addSession('index.php') ) ;
     }
 
     // TODO: this feels clunky - there has to be a better way
