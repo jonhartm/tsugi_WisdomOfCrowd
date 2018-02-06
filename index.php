@@ -109,6 +109,7 @@ if ($USER->instructor){
 
 // Create the view
 $OUTPUT->header();
+echo '<link rel="stylesheet" type="text/css" href="css/style.css">';
 $OUTPUT->bodyStart();
 $OUTPUT->topNav();
 $OUTPUT->flashMessages();
@@ -127,7 +128,8 @@ if ($USER->instructor){
     echo 'Your answers have been submitted';
   }
 }
+
 $OUTPUT->footerStart();
-include "scripts.js"; // All jquery goes in the footer
+echo '<script type="text/javascript" src="scripts.js"></script>';
 $OUTPUT->footerEnd();
 ?>
